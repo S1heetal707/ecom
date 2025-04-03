@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
-import { Search } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { Search } from 'lucide-react';
 
 const Header = () => {
   const [searchQuery, setSearchQuery] = useState('');
+  const [categories, setCategories] = useState([]);
 
-  const categories = ['MEN', 'WOMEN', 'KIDS', 'BEAUTY', 'SHOES'];
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/categories'); // Replace with your API endpoint
+      const data = await response.json();
+      setCategories(data);
+    } catch (error) {
+      console.error('Error fetching categories:', error);
+    }
+  };
 
   return (
     <header className="shadow-md sticky top-0 bg-white z-10">
@@ -20,11 +33,11 @@ const Header = () => {
           <nav className="hidden md:flex space-x-8">
             {categories.map((category) => (
               <Link
-                key={category}
-                to={`/category/${category.toLowerCase()}`} // Redirects to the category page
+                key={category.id}
+                to={`/category/${category.slug}`}
                 className="text-sm font-medium text-gray-700 hover:text-black hover:underline transition-colors"
               >
-                {category}
+                {category.name.toUpperCase()}
               </Link>
             ))}
           </nav>
@@ -45,9 +58,6 @@ const Header = () => {
 
           {/* Authentication */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link to="/signup" className="text-sm font-medium text-gray-700 hover:text-black">
-              SIGNUP
-            </Link>
             <Link to="/login" className="text-sm font-medium text-gray-700 hover:text-black">
               LOGIN
             </Link>

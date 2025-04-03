@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -62,6 +62,12 @@ const LoginPage = () => {
             Login
           </button>
         </form>
+        <p className="text-center text-gray-600 mt-4">
+          Don't have an account yet?
+          <Link to="/signup" className="text-blue-500 font-semibold hover:underline ml-1">
+            Signup
+          </Link>
+        </p>
       </div>
     </div>
   );
